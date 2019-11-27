@@ -64,6 +64,7 @@ namespace Zip.Pay.Users.Api
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddControllers();
         }

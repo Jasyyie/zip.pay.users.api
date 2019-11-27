@@ -10,21 +10,22 @@ namespace Zip.Pay.Users.Service.Services
     /// Get User 
     /// </summary>
     public class UserService : IUserService
+
     {
         private IUserRepository _userRepository;
+        private IAccountService _accountService;
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
         public async Task Create(User user)
         {
-            var emailCheck = Find(user.Email);
+            var emailCheck = await Find(user.Email);
             if (emailCheck == null)
             {
                 //todo: implement automapper
                 var request = new Zip.Pay.Users.Repository.Model.User()
                 {
-                    Id = user.Id,
                     Name = user.Name,
                     Email = user.Email,
                     MonthlySalary = user.MonthlySalary,
@@ -32,6 +33,14 @@ namespace Zip.Pay.Users.Service.Services
                 };
                 await _userRepository.Add(request);
                 user.Id = request.Id;
+
+                var account = new Zip.Pay.Users.Model.Account()
+                {
+                    User = user
+                };
+
+                await _accountService.Create(account);
+
             }
         }
 

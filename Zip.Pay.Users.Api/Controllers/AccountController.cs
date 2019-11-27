@@ -19,7 +19,27 @@ namespace Zip.Pay.Accounts.Api.Controllers
         {
             _accountService = accountService;
         }
+        /// <summary>
+        /// Get trolley total
+        /// </summary>
+        /// <param name="sortOption">High | Low | Ascending | Descending | Recommended</param>
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]Account account)
+        {
+            try
+            {
+                await _accountService.Create(account);
 
+                return Ok(account.Id);
+
+            }
+            catch (System.Exception ex)
+            {
+                // todo: exception logging & handling
+            }
+
+            return new BadRequestResult();
+        }
         [HttpGet]
         public IActionResult Get()
         {

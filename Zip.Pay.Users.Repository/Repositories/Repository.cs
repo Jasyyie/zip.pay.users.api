@@ -33,7 +33,6 @@ namespace Zip.Pay.Users.Repository.Repositories
                 return result;
             });
         }
-
         public virtual async Task Add(TEntity entity)
         {
             await DbSet.AddAsync(entity);
