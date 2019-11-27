@@ -7,6 +7,7 @@ namespace Zip.Pay.Users.Repository.Context
 {
     public class ZipPayUserDbContext : DbContext
     {
+
         public ZipPayUserDbContext(DbContextOptions<ZipPayUserDbContext> options) : base(options)
         {
 
@@ -19,10 +20,10 @@ namespace Zip.Pay.Users.Repository.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            // modelBuilder.Entity<User>()
-            //     .HasMany(t => t.Accounts)
-            //     .WithOne(c => c.User)
-            //     .IsRequired();
+            modelBuilder.Entity<User>()
+                .HasMany(t => t.Accounts)
+                .WithOne(c => c.User)
+                .IsRequired();
         }
     }
 }

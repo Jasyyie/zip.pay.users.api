@@ -22,11 +22,11 @@ namespace Zip.Pay.Users.Api.Controllers
 
         [HttpGet]
         [Route("{email}")]
-        public IActionResult Find(string email)
+        public async Task<IActionResult> Find(string email)
         {
             try
             {
-                var response = _userService.Find(email);
+                var response = await _userService.Find(email);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -37,11 +37,11 @@ namespace Zip.Pay.Users.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var response = _userService.Get();
+                var response = await _userService.Get();
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -52,9 +52,8 @@ namespace Zip.Pay.Users.Api.Controllers
         }
 
         /// <summary>
-        /// Get trolley total
+        /// Create user
         /// </summary>
-        /// <param name="sortOption">High | Low | Ascending | Descending | Recommended</param>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]User user)
         {

@@ -14,9 +14,10 @@ namespace Zip.Pay.Users.Service.Services
     {
         private IUserRepository _userRepository;
         private IAccountService _accountService;
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IAccountService accountService)
         {
             _userRepository = userRepository;
+            _accountService = accountService;
         }
         public async Task Create(User user)
         {
@@ -59,7 +60,7 @@ namespace Zip.Pay.Users.Service.Services
             // Error: System.Text.Json.ThrowHelper.ThrowInvalidOperationException_SerializerCycleDetected(int maxDepth)
             // Dotnet Framework 3 Issue while converting IQureable to List
             var listUser = await _userRepository.GetAll();
-            var response = listUser.Select(u => new Zip.Pay.Users.Model.User() { Id = u.Id, Name = u.Name, MonthlySalary = u.MonthlySalary, MonthlyExpense = u.MonthlyExpense }).ToList();
+            var response = listUser?.Select(u => new Zip.Pay.Users.Model.User() { Id = u.Id, Name = u.Name, MonthlySalary = u.MonthlySalary, MonthlyExpense = u.MonthlyExpense }).ToList();
             return response;
         }
     }

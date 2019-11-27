@@ -20,7 +20,7 @@ namespace Zip.Pay.Accounts.Api.Controllers
             _accountService = accountService;
         }
         /// <summary>
-        /// Get trolley total
+        /// Create Account
         /// </summary>
         /// <param name="sortOption">High | Low | Ascending | Descending | Recommended</param>
         [HttpPost]
@@ -41,11 +41,11 @@ namespace Zip.Pay.Accounts.Api.Controllers
             return new BadRequestResult();
         }
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var response = _accountService.Get();
+                var response = await _accountService.Get();
                 return Ok(response);
             }
             catch (System.Exception ex)

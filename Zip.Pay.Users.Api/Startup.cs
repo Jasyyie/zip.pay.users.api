@@ -23,6 +23,7 @@ using Microsoft.OpenApi.Models;
 using Zip.Pay.Users.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Zip.Pay.Users.Repository.Repositories;
+using Newtonsoft.Json.Serialization;
 
 namespace Zip.Pay.Users.Api
 {
@@ -38,28 +39,36 @@ namespace Zip.Pay.Users.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo
-            //     {
-            //         Title = "ZipPay| Users",
-            //         Version = "v1",
-            //         Description = "",
-            //         TermsOfService = new Uri(""),
-            //         Contact = new OpenApiContact { Name = "Jasmine Kaur", Email = "jaskhundal@gmail.com" }
-            //     });
 
-            //     // Set the comments path for the Swagger JSON and UI.
-            //     var basePath = AppContext.BaseDirectory;
-            //     var xmlPath = Path.Combine(basePath, "ZipPayUsers.Api.xml");
-            //     c.IncludeXmlComments(xmlPath);
-            // });
+            services.AddControllers()
+            .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver =
+                    new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "ZipPay| Users",
+                    Version = "v1",
+                    Description = "",
+                    Contact = new OpenApiContact { Name = "Jasmine Kaur", Email = "jaskhundal@gmail.com" }
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var basePath = AppContext.BaseDirectory;
+                var xmlPath = Path.Combine(basePath, "Zip.Pay.Users.Api.xml");
+                c.IncludeXmlComments(xmlPath);
+            });
 
             // IOC setup
             services
              .AddDbContext<ZipPayUserDbContext>(options =>
                {
-                   options.UseSqlServer(Configuration.GetSection("ZipPayUserDatabase:ConnectionString").Value, opt => { });
+                   options.UseSqlServer(Configuration.GetSection("ZipPayUserDatabase:ConnectionString").Value);
                });
 
             services.AddScoped<IUserRepository, UserRepository>();
@@ -73,7 +82,12 @@ namespace Zip.Pay.Users.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Enable middleware to serve generated Swagger as a JSON endpoint.
-            // app.UseSwagger();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             if (env.IsDevelopment())
