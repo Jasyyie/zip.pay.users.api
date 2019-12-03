@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.5.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Zip.Pay.Users.Model\Zip.Pay.Users.Model.csproj" />
+    <ProjectReference Include="..\Zip.Pay.Users.Repository\Zip.Pay.Users.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -24,6 +24,9 @@ using Zip.Pay.Users.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Zip.Pay.Users.Repository.Repositories;
 using Newtonsoft.Json.Serialization;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+
 
 namespace Zip.Pay.Users.Api
 {
@@ -75,7 +78,9 @@ namespace Zip.Pay.Users.Api
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IValidator<User>, UserValidator>();
             services.AddControllers();
+            services.AddMvc().AddFluentValidation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
